@@ -7,9 +7,10 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.div`
     border:1px solid lightgray;
+    margin-left:6%;
     margin-top:30px;
-    width:90%;
-    background-color:#FEFEFE;
+    width:85%;
+    background-color:#FCFCFC;
     border-radius:8px;
     box-shadow:3px 2px 3px lightgray;
 
@@ -36,15 +37,16 @@ const PostInfo = styled.div`
 `
 const PostDetail = styled.div`
     margin-left:10px;
+    padding-top:2%;
     width:95%;
-    border-top:1px solid #A4A6A7;
+    border-top:1px solid #B6B3B3;
 
     & div{
         margin:10px;
         display:flex;
         padding:10px;
         justify-content:space-between;
-        font-size:18px;
+        font-size:16px;
     }
 
     & img{
@@ -80,11 +82,11 @@ const Post = ({ post }) => {
                     <img src={require("../../images/profile.jpg")} alt="user-profile" />
                     <h3>{post.owner}</h3>
                 </div>
-                <h3>3 Days Ago</h3>
+                <h6>3 Days Ago</h6>
             </PostInfo>
 
             <PostDetail>
-                <h1>{post.title}</h1>
+                <h2>{post.title}</h2>
                 <div>
                     <img src={post.image} alt="post" />
                     <p>

@@ -11,9 +11,9 @@ function App() {
     <Router>
       <h1>Blog App</h1>
       <Routes>
-        <Route exact path="/posts" element={<PostList />} />
-        <Route exact path="/posts/:id" element={<PostDetails/>} />
-        <Route exact path="*" element={<PageNotFound/>} />
+        <Route path="/posts" element={<PostList />} />
+        <Route path="/posts/:id" element={<PostDetails/>} />
+        <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </Router>
   );
