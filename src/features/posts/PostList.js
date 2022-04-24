@@ -1,5 +1,4 @@
 import Post from "./Post";
-import styled from "styled-components";
 import { Container } from 'react-bootstrap';
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
