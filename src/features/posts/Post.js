@@ -1,8 +1,8 @@
 import styled from "styled-components";
-import { faHeart} from "@fortawesome/free-solid-svg-icons";
-import { faFaceSurprise} from "@fortawesome/free-solid-svg-icons";
-import {faThumbsUp} from "@fortawesome/free-solid-svg-icons";
-import {faThumbsDown} from "@fortawesome/free-solid-svg-icons";
+import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { faFaceSurprise } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
+import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 const Wrapper = styled.div`
@@ -72,23 +72,23 @@ const PostReacts = styled.div`
     }
 
 `
-const Post = () => {
-    return (   
+const Post = ({ post }) => {
+    return (
         <Wrapper>
             <PostInfo>
-                    <div>
-                        <img src={require("../../images/profile.jpg")} alt="user-profile"/>
-                        <h3>User Name</h3>
-                    </div>
-                    <h3>3 Days Ago</h3>
+                <div>
+                    <img src={require("../../images/profile.jpg")} alt="user-profile" />
+                    <h3>{post.owner}</h3>
+                </div>
+                <h3>3 Days Ago</h3>
             </PostInfo>
 
             <PostDetail>
-                <h1>Title</h1>
+                <h1>{post.title}</h1>
                 <div>
-                    <img src={require("../../images/egProfile.jpeg")} alt="post"/>
+                    <img src={post.image} alt="post" />
                     <p>
-                        In publishing and graphic design, Lorem ipsum is a placeholder text commonly used to demonstrate the visual form 
+                        {post.description}
                     </p>
                 </div>
             </PostDetail>
@@ -96,23 +96,23 @@ const Post = () => {
             <PostReacts>
                 <div>
                     <b>10</b>
-                    <button><FontAwesomeIcon icon={faThumbsUp} style={{color: '#3DA1FF'}} size="2x"/></button>
+                    <button><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#3DA1FF' }} size="2x" /></button>
                 </div>
                 <div>
                     <b>23</b>
-                    <button><FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} size="2x"/></button>
+                    <button><FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} size="2x" /></button>
                 </div>
                 <div>
                     <b>20</b>
-                    <button><FontAwesomeIcon icon={faFaceSurprise} style={{color: '#F7BF47'}} size="2x"/></button>
+                    <button><FontAwesomeIcon icon={faFaceSurprise} style={{ color: '#F7BF47' }} size="2x" /></button>
                 </div>
                 <div>
                     <b>1</b>
-                    <button><FontAwesomeIcon icon={faThumbsDown} style={{color: '#3DA1FF'}} size="2x"/></button>
+                    <button><FontAwesomeIcon icon={faThumbsDown} style={{ color: '#3DA1FF' }} size="2x" /></button>
                 </div>
             </PostReacts>
         </Wrapper>
-     );
+    );
 }
- 
+
 export default Post;
