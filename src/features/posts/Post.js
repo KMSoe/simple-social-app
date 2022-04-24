@@ -4,6 +4,7 @@ import { faFaceSurprise } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
 import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { formatDistanceToNow } from 'date-fns';
 
 const Wrapper = styled.div`
     border:1px solid lightgray;
@@ -19,6 +20,7 @@ const PostInfo = styled.div`
     margin:10px;
     display:flex;
     justify-content:space-between;
+    align-items: center;
     color:#3C3D3D;
 
     & div{
@@ -78,11 +80,11 @@ const Post = ({ post }) => {
     return (
         <Wrapper>
             <PostInfo>
-                <div>
-                    <img src={require("../../images/profile.jpg")} alt="user-profile" />
-                    <h3>{post.owner}</h3>
+                <div className="d-flex align-items-center">
+                    <img src={require("../../images/profile.jpg")} alt={post.owner} className="me-2" />
+                    <h5 className="h6">{post.owner}</h5>
                 </div>
-                <h6>3 Days Ago</h6>
+                <small>{formatDistanceToNow(new Date(post.created_at))}</small>
             </PostInfo>
 
             <PostDetail>
