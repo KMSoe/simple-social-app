@@ -2,8 +2,9 @@ import React from 'react';
 import './App.css';
 import {BrowserRouter as Router} from 'react-router-dom';
 import PostList from './features/posts/PostList';
-import {Route, Routes , BrowserRouter as Router} from "react-router-dom"
+import {Route, Routes} from "react-router-dom"
 import PostDetails from './features/posts/PostDetails';
+import PageNotFound from './features/posts/PageNotFound';
 
 function App() {
   return (
@@ -12,6 +13,7 @@ function App() {
       <Routes>
         <Route exact path="/posts" element={<PostList />} />
         <Route exact path="/posts/:id" element={<PostDetails/>} />
+        <Route exact path="*" element={<PageNotFound/>} />
       </Routes>
     </Router>
   );
