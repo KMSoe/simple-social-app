@@ -1,10 +1,6 @@
 import styled from "styled-components";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faFaceSurprise } from "@fortawesome/free-solid-svg-icons";
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDistanceToNow } from 'date-fns';
+import Reactions from '../../components/Reactions';
 
 const Wrapper = styled.div`
     border:1px solid lightgray;
@@ -59,23 +55,7 @@ const PostDetail = styled.div`
         margin-left:10px;
     }
 `
-const PostReacts = styled.div`
-    display:flex;
-    justify-content:flex-end;
-    flex-direction:row;
-    margin-left:25px;
-    margin-bottom:20px;
 
-    & button{
-        border:none;
-        background-color:transparent;
-    }
-
-    & button:hover{
-        cursor:pointer;
-    }
-
-`
 const Post = ({ post }) => {
     return (
         <Wrapper>
@@ -96,25 +76,8 @@ const Post = ({ post }) => {
                     </p>
                 </div>
             </PostDetail>
-
-            <PostReacts>
-                <div>
-                    <b>10</b>
-                    <button><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#3DA1FF' }} size="2x" /></button>
-                </div>
-                <div>
-                    <b>23</b>
-                    <button><FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} size="2x" /></button>
-                </div>
-                <div>
-                    <b>20</b>
-                    <button><FontAwesomeIcon icon={faFaceSurprise} style={{ color: '#F7BF47' }} size="2x" /></button>
-                </div>
-                <div>
-                    <b>1</b>
-                    <button><FontAwesomeIcon icon={faThumbsDown} style={{ color: '#3DA1FF' }} size="2x" /></button>
-                </div>
-            </PostReacts>
+            <Reactions reactions={post.reactions} postId={post.id} />
+            
         </Wrapper>
     );
 }
