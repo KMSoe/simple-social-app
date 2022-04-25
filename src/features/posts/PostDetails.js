@@ -1,6 +1,6 @@
 import { Container } from 'react-bootstrap';
 import {Row,Col} from 'react-bootstrap';
-import { Link } from "react-router-dom";
+import CommentList from '../comments/CommentList';
 
 const PostDetails = () => {
     return ( 
@@ -35,14 +35,9 @@ const PostDetails = () => {
                 <Col md={4} sm={6}> 
                     <b>Author: John</b>
                 </Col>
-                <Col md={{ span: 4, offset: 4 }} sm={6}>
-                    <Link to="/comment" 
-                        style={{color: "black", textDecoration: 'none' }}
-                    >
-                        Comment
-                    </Link>
-                </Col>
             </Row>
+            <hr />
+            <CommentList />
         </Container>
      );
 }
