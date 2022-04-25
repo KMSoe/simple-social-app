@@ -1,6 +1,8 @@
 import styled from "styled-components";
 import { formatDistanceToNow } from 'date-fns';
 import Reactions from '../../components/Reactions';
+import { Link } from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
 
 const Wrapper = styled.div`
     border:1px solid lightgray;
@@ -33,29 +35,6 @@ const PostInfo = styled.div`
         margin-left:8px;
     }
 `
-const PostDetail = styled.div`
-    margin-left:10px;
-    padding-top:2%;
-    width:95%;
-    border-top:1px solid #B6B3B3;
-
-    & div{
-        margin:10px;
-        display:flex;
-        padding:10px;
-        justify-content:space-between;
-        font-size:16px;
-    }
-
-    & img{
-        width:20%;
-    }
-
-    & p {
-        margin-left:10px;
-    }
-`
-
 const Post = ({ post }) => {
     return (
         <Wrapper>
@@ -67,16 +46,29 @@ const Post = ({ post }) => {
                 <small>{formatDistanceToNow(new Date(post.created_at))}</small>
             </PostInfo>
 
-            <PostDetail>
-                <h2>{post.title}</h2>
-                <div>
-                    <img src={post.image} alt="post" />
+            <hr />
+            
+            <h2 className="m-3">{post.title}</h2>
+            <Row className="mt-4">
+                <Col xs={12} md={4}>
+                    <img src={post.image} alt="post" style={{width:"80%",marginLeft:"20px"}}/>
+                </Col>
+
+                <Col xs={12} md={8}>
                     <p>
                         {post.description}
                     </p>
-                </div>
-            </PostDetail>
-            <Reactions reactions={post.reactions} postId={post.id} />
+                    <Link to={`/posts/${post.id}`} 
+                      state={{post:post}}
+                      className="float-start"
+                      style={{textDecoration:"none"}}
+                      >
+                        See More...
+                    </Link>   
+                </Col>
+            </Row>
+
+            <Reactions reactions={post.reactions} postId={post.id}/>
             
         </Wrapper>
     );
