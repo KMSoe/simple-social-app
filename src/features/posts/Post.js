@@ -1,8 +1,9 @@
 import styled from "styled-components";
 import { formatDistanceToNow } from 'date-fns';
 import Reactions from '../../components/Reactions';
-import { Link } from "react-router-dom";
+import { Link} from "react-router-dom";
 import { Row, Col } from "react-bootstrap";
+
 
 const Wrapper = styled.div`
     border:1px solid lightgray;
@@ -59,7 +60,6 @@ const Post = ({ post }) => {
                         {post.description}
                     </p>
                     <Link to={`/posts/${post.id}`} 
-                      state={{post:post}}
                       className="float-start"
                       style={{textDecoration:"none"}}
                       >

@@ -1,8 +1,21 @@
 import { Container, Col, Row, Button, Card} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Comment from './Comment';
-
+import { fetchComments,selectAllComments } from './commentsSlice';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { useParams } from 'react-router-dom';
+//
 const CommentList = () => {
+  const id = useParams();
+  const dispatch = useDispatch();
+  const comments = useSelector(selectAllComments);
+  console.log(comments)
+  
+  useEffect(() => {  
+          dispatch(fetchComments(id));    
+  }, [dispatch]);
+
     return (
         <Container>
           <h3>Responses</h3>
@@ -15,7 +28,7 @@ const CommentList = () => {
                 />
               </Col>
               <Col md={11} xs={6}>
-                <h6>Kelly (user name)</h6> 
+                <h6>{comments.name}</h6> 
                 <p style={{color:"grey"}}>4:32 PM (current time)</p>
               </Col>
             </Row>   
@@ -45,3 +58,4 @@ const CommentList = () => {
 }
  
 export default CommentList;
+

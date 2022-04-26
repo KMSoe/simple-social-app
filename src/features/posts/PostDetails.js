@@ -2,12 +2,14 @@ import { Container } from 'react-bootstrap';
 import {Row,Col} from 'react-bootstrap';
 import CommentList from '../comments/CommentList';
 import { formatDistanceToNow } from 'date-fns';
-import { useLocation } from 'react-router-dom';
-
+import { useSelector } from 'react-redux'
+import { useParams } from 'react-router-dom';
+import { selectPostById } from './postsSlice'
 
 const PostDetails = () => {
-    const location = useLocation();
-    const {post} = location.state;
+    const { id } = useParams();
+    //console.log(id)
+    const post = useSelector(state => selectPostById(state.posts,id))
     return ( 
         <Container>
             <Row>
