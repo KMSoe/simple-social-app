@@ -5,6 +5,7 @@ import PostList from './features/posts/PostList';
 import {Route, Routes} from "react-router-dom"
 import PostDetails from './features/posts/PostDetails';
 import PageNotFound from './features/posts/PageNotFound';
+import AddPost from './features/posts/AddPost';
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
       <Routes>
         <Route path="/posts" element={<PostList />} />
         <Route path="/posts/:id" element={<PostDetails/>} />
+        <Route path="/addpost" element={<AddPost/>}/>
         <Route path="/*" element={<PageNotFound />} />
       </Routes>
     </Router>

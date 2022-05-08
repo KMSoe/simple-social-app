@@ -1,8 +1,24 @@
 import Post from "./Post";
-import { Container } from 'react-bootstrap';
+import { Container, Row, Col } from 'react-bootstrap';
 import { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
 import { fetchPosts, selectAllPosts } from './postsSlice';
+import { Link } from "react-router-dom";
+import styled from "styled-components";
+
+const Button = styled.button`
+    position: fixed;
+    bottom: 20px;
+    background-color:#F9F8F8;
+    border:1px solid transparent;
+    border-radius:50%;
+    padding:20px;
+
+    &:hover{
+        background-color:#EDEAEA;
+        border:1px solid #E3E3E3;
+    }
+`
 
 const PostList = () => {
     const dispatch = useDispatch();
@@ -22,7 +38,20 @@ const PostList = () => {
 
     return (
         <Container>
-            {content}
+            <Row>
+                <Col md={11} xs={10}>
+                    {content}
+                </Col>
+                <Col md={1} xs={2}>
+                    <Button>
+                        <Link to="/addpost">
+                            <img src={require("../../images/plus.png")} 
+                                    alt="plusIcon"
+                            /> 
+                        </Link>                       
+                    </Button>
+                </Col>
+            </Row>
         </Container>
     );
 }
