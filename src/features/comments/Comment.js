@@ -1,6 +1,6 @@
 import { Container, Col, Row, Card} from 'react-bootstrap';
 
-const Comment = () => {
+const Comment = ({comment}) => {
     return ( 
         <Container>
             <Card className='mt-3 p-3 b-0' >
@@ -18,7 +18,7 @@ const Comment = () => {
               <Col md={3}>
               </Col>
             </Row> 
-            <p>Nice article. What about design? There's far more to engineering than coding.</p> 
+            <p>{comment.comment_text}</p> 
             </Card>
             
         </Container>

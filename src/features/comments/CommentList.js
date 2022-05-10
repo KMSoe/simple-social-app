@@ -1,20 +1,20 @@
 import { Container, Col, Row, Button, Card} from 'react-bootstrap';
 import Form from 'react-bootstrap/Form';
 import Comment from './Comment';
-import { fetchComments,selectAllComments } from './commentsSlice';
+import { fetchComments,selectComments } from './commentsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 //
 const CommentList = () => {
-  const id = useParams();
+  const {id} = useParams();
   const dispatch = useDispatch();
-  const comments = useSelector(selectAllComments);
-  console.log(comments)
+  const comments = useSelector(selectComments).filter(el=>el.post_id == id);
+  //console.log(comments)
   
   useEffect(() => {  
           dispatch(fetchComments(id));    
-  }, [dispatch]);
+  }, [dispatch, id]);
 
     return (
         <Container>
@@ -50,9 +50,10 @@ const CommentList = () => {
             </Row>
           </Card>
 
-          <Comment />
-          <Comment /> 
-          
+          <h3>Comments ({comments.length})</h3>
+          {
+            comments.map(comment => <Comment key={comment.id} comment={comment}/>)
+          }
         </Container>
       );
 }
