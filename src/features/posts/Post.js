@@ -1,10 +1,9 @@
 import styled from "styled-components";
-import { faHeart } from "@fortawesome/free-solid-svg-icons";
-import { faFaceSurprise } from "@fortawesome/free-solid-svg-icons";
-import { faThumbsUp } from "@fortawesome/free-solid-svg-icons";
-import { faThumbsDown } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { formatDistanceToNow } from 'date-fns';
+import Reactions from '../../components/Reactions';
+import { Link} from "react-router-dom";
+import { Row, Col } from "react-bootstrap";
+
 
 const Wrapper = styled.div`
     border:1px solid lightgray;
@@ -37,45 +36,6 @@ const PostInfo = styled.div`
         margin-left:8px;
     }
 `
-const PostDetail = styled.div`
-    margin-left:10px;
-    padding-top:2%;
-    width:95%;
-    border-top:1px solid #B6B3B3;
-
-    & div{
-        margin:10px;
-        display:flex;
-        padding:10px;
-        justify-content:space-between;
-        font-size:16px;
-    }
-
-    & img{
-        width:20%;
-    }
-
-    & p {
-        margin-left:10px;
-    }
-`
-const PostReacts = styled.div`
-    display:flex;
-    justify-content:flex-end;
-    flex-direction:row;
-    margin-left:25px;
-    margin-bottom:20px;
-
-    & button{
-        border:none;
-        background-color:transparent;
-    }
-
-    & button:hover{
-        cursor:pointer;
-    }
-
-`
 const Post = ({ post }) => {
     return (
         <Wrapper>
@@ -87,34 +47,29 @@ const Post = ({ post }) => {
                 <small>{formatDistanceToNow(new Date(post.created_at))}</small>
             </PostInfo>
 
-            <PostDetail>
-                <h2>{post.title}</h2>
-                <div>
-                    <img src={post.image} alt="post" />
+            <hr />
+            
+            <h2 className="m-3">{post.title}</h2>
+            <Row className="mt-4">
+                <Col xs={12} md={4}>
+                    <img src={post.image} alt="post" style={{width:"80%",marginLeft:"20px"}}/>
+                </Col>
+
+                <Col xs={12} md={8}>
                     <p>
                         {post.description}
                     </p>
-                </div>
-            </PostDetail>
+                    <Link to={`/posts/${post.id}`} 
+                      className="float-start"
+                      style={{textDecoration:"none"}}
+                      >
+                        See More...
+                    </Link>   
+                </Col>
+            </Row>
 
-            <PostReacts>
-                <div>
-                    <b>10</b>
-                    <button><FontAwesomeIcon icon={faThumbsUp} style={{ color: '#3DA1FF' }} size="2x" /></button>
-                </div>
-                <div>
-                    <b>23</b>
-                    <button><FontAwesomeIcon icon={faHeart} style={{ color: 'red' }} size="2x" /></button>
-                </div>
-                <div>
-                    <b>20</b>
-                    <button><FontAwesomeIcon icon={faFaceSurprise} style={{ color: '#F7BF47' }} size="2x" /></button>
-                </div>
-                <div>
-                    <b>1</b>
-                    <button><FontAwesomeIcon icon={faThumbsDown} style={{ color: '#3DA1FF' }} size="2x" /></button>
-                </div>
-            </PostReacts>
+            <Reactions reactions={post.reactions} postId={post.id}/>
+            
         </Wrapper>
     );
 }
