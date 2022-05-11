@@ -10,7 +10,7 @@ const CommentList = () => {
   const {id} = useParams();
   const dispatch = useDispatch();
   const comments = useSelector(selectComments).filter(el=>el.post_id == id);
-  //console.log(comments)
+  console.log(comments)
   
   useEffect(() => {  
           dispatch(fetchComments(id));    
@@ -50,9 +50,9 @@ const CommentList = () => {
             </Row>
           </Card>
 
-          <h3>Comments ({comments.length})</h3>
-          {
-            comments.map(comment => <Comment key={comment.id} comment={comment}/>)
+          <h3 className='mt-3'>Comments ({comments.length})</h3>
+          {  
+            comments && comments.map(comment => <Comment key={comment.id} comment={comment}/>)
           }
         </Container>
       );
