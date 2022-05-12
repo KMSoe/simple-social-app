@@ -3,8 +3,8 @@ This project was developed by using [React](https://reactjs.org/) , [Redux](http
 ## Demo
 https://github.com/KMSoe/simple-social-app
 ## What Features Include In This Project
-* Authentication (email verification included)
-* Create,Update,Delete Blog post (uploading photos also included)
+* Authentication
+* Create,Update,Delete Blog posts (uploading photos also included)
 * View User Profile
 * Show blog posts by certain user
 * Viewers' Reactions (Like, Love, Unlike)
