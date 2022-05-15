@@ -3,19 +3,45 @@ import Form from 'react-bootstrap/Form';
 import Comment from './Comment';
 import { fetchComments,selectComments } from './commentsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect } from 'react';
+import { useEffect , useState} from 'react';
 import { useParams } from 'react-router-dom';
+import { commentAdded } from './commentsSlice';
+import { nanoid } from '@reduxjs/toolkit';
 //
 const CommentList = () => {
   const {id} = useParams();
   const dispatch = useDispatch();
   const comments = useSelector(selectComments).filter(el=>el.post_id == id);
-  console.log(comments)
+  const [ newComment, setNewComment ] = useState('');
+  const [isPending , setPending ] = useState(true);
+  const [error , setError ] = useState('');
+
   
+
   useEffect(() => {  
-          dispatch(fetchComments(id));    
+          dispatch(fetchComments(id));
   }, [dispatch, id]);
 
+  const commentHandler = (e) =>{
+    setNewComment(e.target.value)
+    setPending(true)
+    setError('')
+  }
+
+  const onSubmitHandler = () => {
+    console.log(newComment)
+    if(newComment){
+      dispatch(commentAdded({
+        id: nanoid(),
+        newComment
+      }))
+      setPending(true)
+      setNewComment('');
+    }else{
+      setError("Complete this field")
+      setPending(false)
+    }
+  }
     return (
         <Container>
           <h3>Responses</h3>
@@ -37,14 +63,30 @@ const CommentList = () => {
               <Form>
                 <Col md={8} sm={8}>
                   <Form.Group className='mb-3' controlId='comment'>
-                    <Form.Control type="text" placeholder="Write a comment..." />
+                    <Form.Control 
+                      type="text" 
+                      placeholder="Write a comment..." 
+                      required
+                      value={newComment}
+                      onChange={commentHandler}
+                      />
+                     { error &&
+                       <Form.Text className="text-muted">
+                         {error}
+                      </Form.Text>
+                    }
                   </Form.Group>
                 </Col>
 
                 <Col md={4} sm={4} className='float-end mr-3'>
-                  <Button variant="primary" type="submit">
+                { <Button variant="primary" 
+                          type="button"
+                          onClick={onSubmitHandler}
+                          disabled={!isPending}
+                          >
                       Submit
                   </Button>
+                }
                 </Col>
               </Form>
             </Row>
