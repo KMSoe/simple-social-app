@@ -16,7 +16,7 @@ export const signin = createAsyncThunk("auth/signin", async ({ email, password }
             return data;
         })
         .catch(({ response }) => {
-            return response;
+            return response.data;
         })
 });
 
@@ -48,22 +48,27 @@ const authSlice = createSlice({
     name: 'auth',
     initialState,
     reducers: {
-
+        clearErrors(state, action) {
+            state.signInErrors = [];
+            state.signUpErrors = [];
+        }
     },
     extraReducers(builder) {
         builder
             .addCase(signin.fulfilled, (state, action) => {
-                if(action.payload.success) {
+                if (action.payload.success) {
                     state.user = action.payload.data;
                     state.token = action.payload.meta.token;
                     state.authenticated = true;
-    
+
                     localStorage.setItem('token', action.payload.meta.token);
+                } else {
+                    state.signInErrors = [...state.signInErrors, action.payload.message];
                 }
-                
+
             })
             .addCase(signout.rejected, (state, action) => {
-                console.log('fail');
+                // console.log('fail');
             })
             .addCase(signout.fulfilled, (state, action) => {
                 state.user = null;
@@ -73,10 +78,10 @@ const authSlice = createSlice({
                 localStorage.setItem('token', null);
             })
             .addCase(autoSignin.rejected, (state, action) => {
-                console.log(action.payload);
+                // console.log(action.payload);
             })
             .addCase(autoSignin.fulfilled, (state, action) => {
-                if(action.payload.success) {
+                if (action.payload.success) {
                     state.user = action.payload.data;
                     state.authenticated = true;
                 };
@@ -87,5 +92,6 @@ const authSlice = createSlice({
 export const selectAuthenticated = (state) => state.auth.authenticated;
 export const selectUser = (state) => state.auth.user;
 export const selectUserId = (state) => state.auth.user ? state.auth.user.id : null;
+export const { clearErrors } = authSlice.actions;
 
 export default authSlice.reducer;

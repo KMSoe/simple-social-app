@@ -1,38 +1,50 @@
-import { createRef } from 'react';
-import { Container, Form, FormControl } from 'react-bootstrap';
-import { useDispatch } from 'react-redux';
+import { Container, Form, FormControl, Row, Col, Alert } from 'react-bootstrap';
+import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
-import { signin } from './authSlice';
+import { signin, clearErrors } from './authSlice';
+import { useForm } from "react-hook-form";
+import { useEffect } from 'react';
 
 const Signin = () => {
+    const { register, handleSubmit, formState: { errors, isValid, isDirty } } = useForm({ mode: 'onChange' });
     const dispatch = useDispatch();
     const navigate = useNavigate();
-    let email = createRef();
-    let password = createRef();
+    const signInErrors = useSelector(state => state.auth.signInErrors);
 
-    const handleSubmit = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        dispatch(clearErrors());
+    }, []);
 
-      dispatch(signin({ email: email.current.value, password: password.current.value }))
-      .then(({payload}) => {
-          if(payload.success) navigate('/');
-      })
+    const onSubmit = (data) => {
+        dispatch(signin({ email: data.email, password: data.password }))
+            .then(({ payload }) => {
+                if (payload.success) navigate('/');
+            })
     }
 
     return (
-        <Container>
-            <Form onSubmit={handleSubmit}>
-                <div className="mb-3">
-                    <label htmlFor="email">Email</label>
-                    <FormControl type="email" id="email" ref={email} />
-                </div>
-                <div className="mb-3">
-                    <label htmlFor="password">Password</label>
-                    <FormControl type="password" id="password" ref={password} />
-                </div>
-                <button type="submit" className="btn btn-primary">Signin</button>
+        <Container style={{ paddingTop: '60px' }}>
+            <h3 className="text-center">Welcome Back</h3>
+            {signInErrors.map((err, index) => <Alert key={index} variant='danger' className="text-center">{err}</Alert>)}
 
-            </Form>
+            <Row className="justify-content-center">
+                <Col md={8} xl={6}>
+                    <Form onSubmit={handleSubmit(onSubmit)}>
+                        <div className="mb-3">
+                            <label htmlFor="email">Email</label>
+                            <FormControl type="email" id="email" {...register('email', { required: true })} />
+                            {errors.email?.type === 'required' && <span className="text-danger">Email is required</span>}
+                        </div>
+                        <div className="mb-3">
+                            <label htmlFor="password">Password</label>
+                            <FormControl type="password" id="password" {...register('password', { required: true })} />
+                            {errors.password?.type === 'required' && <span className="text-danger">Password is required</span>}
+                        </div>
+                        <button type="submit" className="btn btn-primary" disabled={!isDirty || !isValid}>Signin</button>
+
+                    </Form>
+                </Col>
+            </Row>
         </Container>
     )
 }
