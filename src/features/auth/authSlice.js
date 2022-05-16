@@ -20,6 +20,22 @@ export const signin = createAsyncThunk("auth/signin", async ({ email, password }
         })
 });
 
+export const signup = createAsyncThunk("auth/signin", async (data) => {
+    return axiosObj.post('/register', data, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then(({ data }) => {
+            console.log(data);
+            return data;
+        })
+        .catch(({ response }) => {
+            console.log(response.data);
+            return response.data;
+        })
+});
+
 export const signout = createAsyncThunk("auth/signout", async () => {
     return axiosObj.post('/logout', JSON.stringify({}))
         .then((res) => {
