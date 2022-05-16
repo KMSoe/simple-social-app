@@ -39,14 +39,14 @@ const PostList = () => {
     return (
         <Container>
             <Row>
-                <Col md={11} xs={10}>
+                <Col md={11}>
                     {content}
                 </Col>
-                <Col md={1} xs={2}>
+                <Col md={1} >
                     <Button>
                         <Link to="/addpost">
                             <img src={require("../../images/plus.png")} 
-                                    alt="plusIcon"
+                                    alt="plusIcon"        
                             /> 
                         </Link>                       
                     </Button>

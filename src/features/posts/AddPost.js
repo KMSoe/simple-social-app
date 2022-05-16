@@ -1,5 +1,38 @@
+import { isValid } from "date-fns";
+import {useState} from "react";
 import { Container , Form, Card ,Row, Col, Button} from "react-bootstrap";
+
 const AddPost = () => {
+    const [title, setTitle ] = useState('');
+    const [postImage , setPostImage ] = useState('');
+    const [description, setDescription ] = useState('');
+    const [category , setCategory ] = useState('');
+    const [error , setError ] = useState('');
+    const [pending , setPending ] = useState(false);
+
+    const postSubmithandler = (e) => {
+        const isValid = Boolean(title && description && category)
+        e.preventDefault();
+        if(isValid){
+            if(postImage){
+                console.log(title,description,category,postImage)
+                setTitle('')
+                setDescription('')
+                setCategory('')
+            }
+            else{
+                console.log(title,description,category)
+                setTitle('')
+                setDescription('')
+                setCategory('')
+                setPostImage('')
+            }
+        }else{
+            setPending(true)
+            setError("All fields must be filled out.")
+        }
+    }
+
     return ( 
         <Container>
             <h1 style={{textAlign:"center"}}>Create New Post</h1>   
@@ -19,25 +52,50 @@ const AddPost = () => {
                     </Col>
                     <Col md={3} />
                 </Row> 
-                <Form.Label className="mt-3">Title</Form.Label>
+                <Form.Label className="mt-3">Title *</Form.Label>
                 <Form.Control type="text" 
                               placeholder="Title" 
                               size="lg"
                               required 
+                              onChange={(e)=> { setTitle(e.target.value)
+                                                setPending(false)    
+                                              }
+                                        }
+                              value={title}
                 />
                 <Form.Label className="mt-3">Post Main Image</Form.Label>
                 <Form.Control type="file" 
                         id="addimg"
                         accept="image/png, image/jpeg, image/jpg"
+                        value={postImage}
+                        onChange={(e)=> {
+                            setPostImage(e.target.value)
+                            setPending(false)
+                            }
+                    }
                 />
 
-                <Form.Label className="mt-3">Tell Your Story</Form.Label>
+                <Form.Label className="mt-3">Tell Your Story *</Form.Label>
                 <Form.Control as="textarea" 
                     rows="4"
                     required
+                    value={description}
+                    onChange={(e)=> {
+                        setDescription(e.target.value) 
+                        setPending(false)
+                        setError('')
+                    }
+                }
                 />
-                <Form.Label className="mt-3">Category</Form.Label>
-                <Form.Control as="select" >
+                <Form.Label className="mt-3">Category *</Form.Label>
+                <Form.Control as="select"
+                              value={category}
+                              onChange={(e)=> {
+                                  setCategory(e.target.value)
+                                  setPending(false)
+                                  setError('')
+                                }
+                            }>
                     <option value="tips">Tips</option>
                     <option value="technology">Technology</option>
                     <option value="science">Science</option>
@@ -51,7 +109,16 @@ const AddPost = () => {
                     <option value="software">Software</option>
                     <option value="blockchain">IoT and Blockchain</option>
                 </Form.Control>
-                <Button variant="primary" type="submit" className="mt-4 float-end">
+
+                {error && <h6 style={{color :"red",marginTop:"30px"}}>
+                            {error}
+                          </h6>}
+
+                <Button variant="primary" 
+                        type="button" 
+                        className="mt-4 float-end"
+                        disabled={pending}
+                        onClick={postSubmithandler}>
                     Submit
                 </Button>
                 </Form>
