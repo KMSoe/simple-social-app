@@ -3,45 +3,24 @@ import Form from 'react-bootstrap/Form';
 import Comment from './Comment';
 import { fetchComments,selectComments } from './commentsSlice';
 import { useDispatch, useSelector } from 'react-redux';
-import { useEffect , useState} from 'react';
+import { useEffect } from 'react';
 import { useParams } from 'react-router-dom';
 import { commentAdded } from './commentsSlice';
-import { nanoid } from '@reduxjs/toolkit';
+import { useForm } from "react-hook-form";
 //
 const CommentList = () => {
   const {id} = useParams();
   const dispatch = useDispatch();
   const comments = useSelector(selectComments).filter(el=>el.post_id == id);
-  const [ newComment, setNewComment ] = useState('');
-  const [isPending , setPending ] = useState(true);
-  const [error , setError ] = useState('');
-
-  
+  const {register, handleSubmit, formState:{errors}} = useForm();
+  console.log(errors)
+  const onSubmit = data => console.log(data);
 
   useEffect(() => {  
           dispatch(fetchComments(id));
   }, [dispatch, id]);
 
-  const commentHandler = (e) =>{
-    setNewComment(e.target.value)
-    setPending(true)
-    setError('')
-  }
-
-  const onSubmitHandler = () => {
-    console.log(newComment)
-    if(newComment){
-      dispatch(commentAdded({
-        id: nanoid(),
-        newComment
-      }))
-      setPending(true)
-      setNewComment('');
-    }else{
-      setError("Complete this field")
-      setPending(false)
-    }
-  }
+  
     return (
         <Container>
           <h3>Responses</h3>
@@ -60,29 +39,22 @@ const CommentList = () => {
             </Row>   
 
             <Row>
-              <Form>
+              <Form onSubmit={handleSubmit(onSubmit)}>
                 <Col md={8} sm={8}>
                   <Form.Group className='mb-3' controlId='comment'>
                     <Form.Control 
                       type="text" 
                       placeholder="Write a comment..." 
-                      required
-                      value={newComment}
-                      onChange={commentHandler}
+                      {...register("newComment", {required:true})}
                       />
-                     { error &&
-                       <Form.Text className="text-muted">
-                         {error}
-                      </Form.Text>
-                    }
+                      {errors.newComment && <p>This is required</p>}
                   </Form.Group>
                 </Col>
 
                 <Col md={4} sm={4} className='float-end mr-3'>
                 { <Button variant="primary" 
-                          type="button"
-                          onClick={onSubmitHandler}
-                          disabled={!isPending}
+                          type="submit"
+                          disabled={errors.newComment}
                           >
                       Submit
                   </Button>
