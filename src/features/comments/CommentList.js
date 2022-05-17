@@ -14,7 +14,7 @@ const CommentList = () => {
   const comments = useSelector(selectComments).filter(el=>el.post_id == id);
   const {register, handleSubmit, formState:{errors}} = useForm();
   console.log(errors)
-  const onSubmit = data => console.log(data);
+  const handleRegister = (data) => console.log(data);
 
   useEffect(() => {  
           dispatch(fetchComments(id));
@@ -39,7 +39,7 @@ const CommentList = () => {
             </Row>   
 
             <Row>
-              <Form onSubmit={handleSubmit(onSubmit)}>
+              <Form onSubmit={handleSubmit(handleRegister)}>
                 <Col md={8} sm={8}>
                   <Form.Group className='mb-3' controlId='comment'>
                     <Form.Control 
@@ -47,7 +47,7 @@ const CommentList = () => {
                       placeholder="Write a comment..." 
                       {...register("newComment", {required:true})}
                       />
-                      {errors.newComment && <p>This is required</p>}
+                      {errors.newComment && <p style={{color:"red",marginTop:"20px"}}>This is required</p>}
                   </Form.Group>
                 </Col>
 
