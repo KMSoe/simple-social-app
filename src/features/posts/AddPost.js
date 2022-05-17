@@ -1,44 +1,33 @@
-import { isValid } from "date-fns";
-import {useState} from "react";
 import { Container , Form, Card ,Row, Col, Button} from "react-bootstrap";
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { yupResolver } from "@hookform/resolvers/yup";
+
+const schema = yup.object().shape({
+    picture:yup
+        .mixed()
+        .test("type", "We only support jpeg, jpg, png file formats", function (value){
+            return value[0] && value && (   
+                value[0].type === 'image/jpeg' ||
+                value[0].type === 'image/jpg' ||
+                value[0].type === 'iamge/png' 
+            )
+            
+        })
+})
 
 const AddPost = () => {
-    const [title, setTitle ] = useState('');
-    const [postImage , setPostImage ] = useState('');
-    const [description, setDescription ] = useState('');
-    const [category , setCategory ] = useState('');
-    const [error , setError ] = useState('');
-    const [pending , setPending ] = useState(false);
-
-    const postSubmithandler = (e) => {
-        const isValid = Boolean(title && description && category)
-        e.preventDefault();
-        if(isValid){
-            if(postImage){
-                console.log(title,description,category,postImage)
-                setTitle('')
-                setDescription('')
-                setCategory('')
-            }
-            else{
-                console.log(title,description,category)
-                setTitle('')
-                setDescription('')
-                setCategory('')
-                setPostImage('')
-            }
-        }else{
-            setPending(true)
-            setError("All fields must be filled out.")
-        }
-    }
-
+   const {register, handleSubmit , formState:{errors, isValid} } = useForm({
+        mode: 'onChange',
+        resolver:yupResolver(schema)
+        });
+   const handleRegister = data => console.log(data)
     return ( 
         <Container>
             <h1 style={{textAlign:"center"}}>Create New Post</h1>   
 
             <Card className='mt-3 p-3 b-0' style={{backgroundColor:"#F8F9FA"}} >
-                <Form className="m-5">
+                <Form className="m-5" onSubmit={handleSubmit(handleRegister)}>
                 <Row>
                     <Col md={1} xs={6}>
                     <img src={require("../../images/profile.jpg")} //user profile picture
@@ -52,50 +41,32 @@ const AddPost = () => {
                     </Col>
                     <Col md={3} />
                 </Row> 
-                <Form.Label className="mt-3">Title *</Form.Label>
+                <Form.Label className="mt-3" htmlFor="title">Title *</Form.Label>
                 <Form.Control type="text" 
                               placeholder="Title" 
                               size="lg"
-                              required 
-                              onChange={(e)=> { setTitle(e.target.value)
-                                                setPending(false)    
-                                              }
-                                        }
-                              value={title}
+                              id="title"
+                              {...register("title", {required:true})}                   
                 />
-                <Form.Label className="mt-3">Post Main Image</Form.Label>
+                 {errors.title && <p style={{color:"red",marginTop:"20px"}}>This is required</p>}
+                <Form.Label className="mt-3" htmlFor="picture">Post Main Image</Form.Label>
                 <Form.Control type="file" 
-                        id="addimg"
-                        accept="image/png, image/jpeg, image/jpg"
-                        value={postImage}
-                        onChange={(e)=> {
-                            setPostImage(e.target.value)
-                            setPending(false)
-                            }
-                    }
+                        id="picture"
+                       {...register("picture")}
                 />
-
-                <Form.Label className="mt-3">Tell Your Story *</Form.Label>
+                {errors.picture && <p style={{color:"red",marginTop:"20px"}}>{errors.picture.message}</p>}
+                <Form.Label className="mt-3" htmlFor="description">Tell Your Story *</Form.Label>
                 <Form.Control as="textarea" 
                     rows="4"
-                    required
-                    value={description}
-                    onChange={(e)=> {
-                        setDescription(e.target.value) 
-                        setPending(false)
-                        setError('')
-                    }
-                }
+                    id="description"
+                    {...register("description", {required:true})}
+                
                 />
+                 {errors.description && <p style={{color:"red",marginTop:"20px"}}>This is required</p>}
                 <Form.Label className="mt-3">Category *</Form.Label>
                 <Form.Control as="select"
-                              value={category}
-                              onChange={(e)=> {
-                                  setCategory(e.target.value)
-                                  setPending(false)
-                                  setError('')
-                                }
-                            }>
+                              {...register("category", {required:true})}
+                >
                     <option value="tips">Tips</option>
                     <option value="technology">Technology</option>
                     <option value="science">Science</option>
@@ -109,16 +80,16 @@ const AddPost = () => {
                     <option value="software">Software</option>
                     <option value="blockchain">IoT and Blockchain</option>
                 </Form.Control>
-
-                {error && <h6 style={{color :"red",marginTop:"30px"}}>
-                            {error}
+                {errors.category && <p style={{color:"red",marginTop:"20px"}}>This is required</p>}
+                {errors && <h6 style={{color :"red",marginTop:"30px"}}>
+                            {console.log(errors)}
                           </h6>}
 
                 <Button variant="primary" 
-                        type="button" 
+                        type="submit" 
                         className="mt-4 float-end"
-                        disabled={pending}
-                        onClick={postSubmithandler}>
+                        disabled={ !isValid}
+                        >
                     Submit
                 </Button>
                 </Form>
